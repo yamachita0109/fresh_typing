@@ -1,7 +1,7 @@
 /** @jsx h */
 import { h } from "preact";
 import { tw } from "@twind";
-import Counter from "../islands/Counter.tsx";
+import Game from "../islands/Game.tsx";
 
 export default function Home() {
   return (
@@ -14,7 +14,7 @@ export default function Home() {
       <p class={tw`my-6`}>
         Let's Typing.
       </p>
-      <Counter start={3} />
+      <Game />
     </div>
   );
 }
