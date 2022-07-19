@@ -10,8 +10,6 @@ export default function Game() {
   const [num, setNum] = useState(0);
   const [timer, setTimer] = useState(0);
 
-  const [flg, setFlg] = useState(false);
-
   const methods = {
     clickStart: async () => {
       setActive(true);
