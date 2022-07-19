@@ -1,7 +1,7 @@
 /** @jsx h */
 import { h } from "preact";
 import { useState } from "preact/hooks";
-import { IS_BROWSER } from "$fresh/runtime.ts";
+import { get } from "apis/advice.ts";
 import { tw } from "@twind";
 
 export default function Game() {
@@ -10,20 +10,30 @@ export default function Game() {
   const [num, setNum] = useState(0);
   const [timer, setTimer] = useState(0);
 
+  const [flg, setFlg] = useState(false);
+
   const methods = {
-    clickStart: () => {
-      methods.startTimer()
+    clickStart: async () => {
       setActive(true);
+      const res = await get();
+      setQuestion(res.advice);
+      methods.startTimer();
+    },
+
+    inputForm: (e: InputEvent) => {
+      const value = (e.target as HTMLInputElement).value;
+      if (value !== question) return;
+      methods.stopTimer();
+      setActive(false);
     },
 
     startTimer: () => {
-      const start = Date.now();
-      const accum = 0
-      setTimer(setInterval(() => { setNum(accum + (Date.now() - start) * 0.001) }, 10))
+      const start = Date.now(), accum = 0;
+      setTimer(setInterval(() => { setNum(accum + (Date.now() - start) * 0.001) }, 10));
     },
 
     stopTimer: () => {
-      clearInterval(timer)
+      clearInterval(timer);
     },
   }
 
@@ -38,8 +48,8 @@ export default function Game() {
         >
           Start.
         </button>
-      <button onClick={ methods.stopTimer }>stop</button>
       </div>
+
 
       <div class={tw`mb-10`}>
         <strong class={tw`text-3xl font-thin leading-none text-neutral-600 lg:text-4xl`}>
@@ -49,8 +59,19 @@ export default function Game() {
 
       <div class={tw`mb-10`}>
         <strong class={tw`text-3xl font-thin leading-none text-neutral-600 lg:text-4xl`}>
-          {{ question }}
+          { question }
         </strong>
+      </div>
+
+      <div class={tw`mb-10`}>
+        <input
+          type="text"
+          class={tw`relative outline-none rounded py-3 px-3 w-full bg-white shadow text-sm
+            text-gray-700 placeholder-gray-400 focus:outline-none focus:shadow-outline`}
+          placeholder="Let's Typing."
+          disabled={ !active }
+          onInput={ methods.inputForm }
+        />
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 {
   "imports": {
+    "apis/": "./utils/apis/",
     "$fresh/": "https://raw.githubusercontent.com/lucacasonato/fresh/main/",
     "preact": "https://esm.sh/preact@10.8.2",
     "preact/": "https://esm.sh/preact@10.8.2/",
